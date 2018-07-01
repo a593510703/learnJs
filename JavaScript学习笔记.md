@@ -355,5 +355,67 @@ now.getTime(); // 1435146562875, 以number形式表示的时间戳
 利用正则表达式匹配字符串，分割字符串，分组，全局搜索。
 不想看了。另择吉日
 
+JS中创建正则表达式的方法：
+
+- 用//括起来一个正则表达式。
+- `var re = new RegExp('正则表达式')`。这种方法要注意字符串的转义问题。
+
+正则表达式匹配：
+re.test(str)。返回true就是匹配
+
+切割字符串：字符串自带的split方法可以接受一个RegExp，用来切割字符串
+
+eg：切割任意数量的空格/,/;
+`'a,b;; c  d'.split(/[\s\,\;]+/); // ['a', 'b', 'c', 'd']`
+
+分组是正则表达式的内容
+提取分组：exec()方法。
+eg:提取原串和他的分组们
+```js
+var re = /^(\d{3})-(\d{3,8})$/;
+re.exec('010-12345'); // ['010-12345', '010', '12345']
+re.exec('010 12345'); // null
+```
+
+全局搜索：定义正则表达式的时候加上'g'参数 或者 用'//'定义的时候改为'//g'
+其他参数：i忽略大小写，m多行匹配
+
 ###JSON
-格式化对象的显示
+对象名：JSON
+stringify方法可以格式化对象的显示，接受多个参数。第一个参数是被格式化的对象，第二个参数分多种情况
+
+- null：不过滤对象，按顺序输出
+- 存key值的Array：只输出Array里面对应的键值对
+- 函数：对每个键值对都进行函数运算后输出
+
+第三个参数接受一个字符串，表示缩进内容。
+也可以在原对象中写一个toJSON()方法。这样调用stringify()方法时输出的是toJSON()的返回值。
+
+JSON格式的字符串转化成JS对象：JSON.parse(str);
+也接受一个函数，用来转化解析的属性
+
+##面向对象编程
+###原型
+`实例/派生类.__proto__ = 对象/基类;`
+推荐的继承/实例化方式
+```js
+function createStudent(name) {// 基于Student原型创建一个新对象:
+    var s = Object.create(Student);// 初始化新对象:
+    s.name = name;
+    return s;
+}
+var xiaoming = createStudent('小明');
+```
+
+原型链
+Array：arr ----> Array.prototype ----> Object.prototype ----> null
+Function：foo ----> Function.prototype ----> Object.prototype ----> null
+原型链不宜过长
+
+构造函数：用new调用函数，会返回一个对象this
+constructor属性：指向基类
+eg: 
+```js
+Student.prototype.constructor === Student // true
+xiaoming instanceof Student; // true
+```
