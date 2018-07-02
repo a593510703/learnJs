@@ -413,9 +413,121 @@ Function：foo ----> Function.prototype ----> Object.prototype ----> null
 原型链不宜过长
 
 构造函数：用new调用函数，会返回一个对象this
-constructor属性：指向基类
+constructor属性：指向基类（构造器）
+prototype属性：原型
 eg: 
 ```js
 Student.prototype.constructor === Student // true
 xiaoming instanceof Student; // true
 ```
+
+推荐的构造方法：
+```js
+function Student(props) {
+    this.name = props.name || '匿名'; // 默认值为'匿名'
+    this.grade = props.grade || 1; // 默认值为1
+}
+
+Student.prototype.hello = function () {
+    alert('Hello, ' + this.name + '!');
+};
+
+function createStudent(props) {
+    return new Student(props || {})
+}
+```
+使用createStudent()的好处：
+
+- 不需要用new调用构造函数
+- 传参灵活
+
+原型继承
+方法：利用F()函数，封装inherit()函数
+直接用结果代码就是这样
+```js
+function inherits(Child, Parent) {
+    var F = function () {};
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.prototype.constructor = Child;
+}
+```
+
+class继承
+定义student的方法：
+```js
+class Student {
+    constructor(...) {
+        ...
+    }
+}
+```
+构造函数/内部的函数不需要用function申明
+对应创建类的代码：`var xm = new Student('xm');`
+
+class继承的方式：和c++一样，利用extends关键字继承
+调用基类的构造函数：`super(...);`
+
+---
+
+window对象：不仅是全局变量的作用域，也是浏览器的窗口
+可获取的参数
+
+- innerWidth / innerHeight: 获取浏览器的净宽/高
+- outerWidth / outerHeight: 获取浏览器窗口的整个宽/高
+- navigator对象
+- screen对象
+- document对象
+
+navigator对象：
+
+- navigator.appName：浏览器名称
+- navigator.appVersion：浏览器版本
+- navigator.language：浏览器设置的语言
+- navigator.platform：操作系统类型
+- navigator.userAgent：浏览器设定的User-Agent字符串
+
+screen对象：
+
+- screen.width：屏幕宽度，以像素为单位
+- screen.height：屏幕高度，以像素为单位
+- screen.colorDepth：返回颜色位数，如8、16、24
+
+location对象：表示当前界面的url信息
+
+- location.href // 'http://www.example.com:8080/path/index.html?a=1&b=2#TOP'
+- location.protocol // 'http'
+- location.host // 'www.example.com'
+- location.port // '8080'
+- location.pathname // '/path/index.html'
+- location.search // '?a=1&b=2'
+- location.hash // 'TOP'
+- location.assign() // 接受一个url，加载一个新的界面
+- location.reload() // 不接受参数，F5
+
+document对象：表示当前页面
+- document.title：界面的标题，可以动态改变
+- 是DOM树的根结点，寻找节点要从document开始
+- 用document对象提供的getElementById()和getElementsByTagName()可以按ID获得一个DOM节点和按Tag名称获得一组DOM节点
+- document.cookie：返回当前页面的cookie
+
+针对不同内核的浏览器，window对象中的参数名不一样。应对的方法：利用undefined的特性，用||判断
+`var width = window.innerWidth || document.body.clientWidth;`
+
+---
+
+HTML文档被浏览器解析后就是一棵**DOM树**，JavaScript可以对这棵树进行操作。
+对一个节点操作
+
+- 更新
+- 遍历
+- 添加
+- 删除：包括删除该节点和该节点的所有子节点
+
+获取一棵DOM树的方法
+
+- document.getElementById()：直接定位唯一的一个DOM节点
+- document.getElementsByTagName()：定位一组节点
+- document.getElementsByClassName()：同上
+- querySelector()和querySelectorAll()
+
