@@ -518,6 +518,7 @@ document对象：表示当前页面
 
 HTML文档被浏览器解析后就是一棵**DOM树**，JavaScript可以对这棵树进行操作。
 对一个节点操作
+HTML还没深入的学习，先提炼下重点
 
 - 更新
 - 遍历
@@ -530,4 +531,16 @@ HTML文档被浏览器解析后就是一棵**DOM树**，JavaScript可以对这�
 - document.getElementsByTagName()：定位一组节点
 - document.getElementsByClassName()：同上
 - querySelector()和querySelectorAll()
+
+更新DOM
+
+- 修改innerHTML属性：不但可以修改一个DOM节点的文本内容，还可以直接通过HTML片段修改DOM节点内部的子树
+- 修改innerText或textContent属性
+- 修改CSS：DOM节点的style属性对应所有的CSS，可以直接获取或设置
+
+插入DOM
+
+- 现在的DOM节点是空的：直接对innerHTML赋值
+- 不是空的：appendChild()
+- 把子节点插入到指定的位置的方法：可以使用parentElement.insertBefore(newElement, referenceElement);，子节点会插入到referenceElement之前。
 
